@@ -1,0 +1,23 @@
+#!/usr/bin/php
+#
+# An example hook script to prepare a packed repository for use over
+# dumb transports.
+#
+# To enable this hook, rename this file to "post-update".
+
+<?php
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "192.168.11.216");
+
+$postData = [];
+$postData['ref'] = $argv[0];
+$postData['target'] = $argv[1];
+$postData = http_build_query($postData);
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+
+curl_exec($ch);
+curl_close($ch);
+
